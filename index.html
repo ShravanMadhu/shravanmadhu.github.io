@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,7 +7,7 @@
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  
+
   <!-- Configure Tailwind dark mode -->
   <script>
     tailwind.config = {
@@ -15,74 +15,27 @@
     }
   </script>
 
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
   <!-- Inter Font -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
-  
-  <!-- Custom Styles -->
+
   <style>
     body {
       font-family: 'Inter', sans-serif;
     }
-    
-    /* Dark mode toggle styles */
-    .dark-toggle {
-      position: relative;
-      display: inline-block;
-      width: 60px;
-      height: 34px;
-    }
-    
-    .dark-toggle input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-    
-    .dark-toggle-slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: #ccc;
-      transition: .4s;
-      border-radius: 34px;
-    }
-    
-    .dark-toggle-slider:before {
-      position: absolute;
-      content: "";
-      height: 26px;
-      width: 26px;
-      left: 4px;
-      bottom: 4px;
-      background-color: white;
-      transition: .4s;
-      border-radius: 50%;
-    }
-    
-    input:checked + .dark-toggle-slider {
-      background-color: #4b5563;
-    }
-    
-    input:checked + .dark-toggle-slider:before {
-      transform: translateX(26px);
-    }
   </style>
 </head>
 
-<body class="bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-100 transition-all duration-300">
+<body class="bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-100 transition-all duration-300 min-h-screen">
 
-  <!-- Dark Mode Toggle Switch -->
+  <!-- Dark Mode Toggle -->
   <div class="flex justify-end p-4">
-    <div class="flex items-center gap-2">
-      <span class="text-sm dark:text-gray-200">Toggle Dark Mode</span>
-      <label class="dark-toggle">
-        <input type="checkbox" id="darkModeToggle">
-        <span class="dark-toggle-slider"></span>
-      </label>
-    </div>
+    <button id="darkToggleBtn" onclick="toggleDark()" class="flex items-center gap-2 px-4 py-2 bg-gray-200 dark:bg-gray-800 text-sm rounded-lg transition">
+      <i id="themeIcon" class="lucide lucide-moon w-5 h-5"></i>
+      <span>Toggle Dark Mode</span>
+    </button>
   </div>
 
   <!-- Header -->
@@ -119,36 +72,41 @@
 
   <!-- Footer -->
   <footer class="text-center mt-20 py-6">
-    <div class="space-x-8">
-      <a href="mailto:shravan@example.com" class="text-blue-600 dark:text-blue-400 hover:underline">Email</a>
-      <a href="https://github.com/shravanmadhu" target="_blank" class="text-blue-600 dark:text-blue-400 hover:underline">GitHub</a>
-      <a href="https://linkedin.com/in/shravanmadhu" target="_blank" class="text-blue-600 dark:text-blue-400 hover:underline">LinkedIn</a>
+    <div class="flex justify-center space-x-6">
+      <a href="mailto:shravan@example.com" class="text-blue-600 dark:text-blue-400 hover:text-blue-800" target="_blank">
+        <i class="lucide lucide-mail w-5 h-5"></i>
+      </a>
+      <a href="https://github.com/shravanmadhu" class="text-blue-600 dark:text-blue-400 hover:text-blue-800" target="_blank">
+        <i class="lucide lucide-github w-5 h-5"></i>
+      </a>
+      <a href="https://linkedin.com/in/shravanmadhu" class="text-blue-600 dark:text-blue-400 hover:text-blue-800" target="_blank">
+        <i class="lucide lucide-linkedin w-5 h-5"></i>
+      </a>
     </div>
   </footer>
 
-  <!-- Simple dark mode script -->
+  <!-- Dark Mode Toggle Script -->
   <script>
-    // Wait for DOM to be fully loaded
-    document.addEventListener('DOMContentLoaded', function() {
-      // Get the toggle element
-      const darkModeToggle = document.getElementById('darkModeToggle');
-      
-      // Check for saved theme preference
+    const themeIcon = document.getElementById('themeIcon');
+    const toggleBtn = document.getElementById('darkToggleBtn');
+
+    function toggleDark() {
+      const html = document.documentElement;
+      html.classList.toggle('dark');
+      const isDark = html.classList.contains('dark');
+      localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+      themeIcon.setAttribute('class', `lucide lucide-${isDark ? 'sun' : 'moon'} w-5 h-5`);
+      lucide.createIcons();
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
       if (localStorage.getItem('darkMode') === 'enabled') {
         document.documentElement.classList.add('dark');
-        darkModeToggle.checked = true;
+        themeIcon.setAttribute('class', 'lucide lucide-sun w-5 h-5');
+      } else {
+        themeIcon.setAttribute('class', 'lucide lucide-moon w-5 h-5');
       }
-      
-      // Add toggle event listener
-      darkModeToggle.addEventListener('change', function() {
-        if (this.checked) {
-          document.documentElement.classList.add('dark');
-          localStorage.setItem('darkMode', 'enabled');
-        } else {
-          document.documentElement.classList.remove('dark');
-          localStorage.setItem('darkMode', 'disabled');
-        }
-      });
+      lucide.createIcons();
     });
   </script>
 </body>
