@@ -26,9 +26,12 @@
       color: #f9fafb;
     }
 
-    html.dark .toggle-btn {
+    html.dark .toggle-bg {
       background-color: #4b5563;
-      color: #f9fafb;
+    }
+
+    html.dark .toggle-circle {
+      transform: translateX(1.5rem);
     }
   </style>
 
@@ -37,11 +40,13 @@
 </head>
 <body class="bg-gradient-to-b from-white to-blue-50 text-gray-800 p-6">
 
-  <!-- Dark Mode Toggle -->
-  <div class="flex justify-end">
-    <button onclick="toggleDark()" class="toggle-btn bg-gray-200 text-sm px-4 py-2 rounded shadow">
-      Toggle Dark Mode
-    </button>
+  <!-- Dark Mode Toggle Switch -->
+  <div class="flex justify-end p-4">
+    <div class="relative inline-block w-14 h-8 align-middle select-none transition duration-200 ease-in">
+      <input type="checkbox" id="dark-toggle" class="absolute top-0 left-0 w-full h-full opacity-0 z-10 cursor-pointer" onchange="toggleDark()" />
+      <div class="toggle-bg block w-14 h-8 bg-gray-300 rounded-full shadow-inner transition"></div>
+      <div class="toggle-circle absolute left-1 top-1 bg-white w-6 h-6 rounded-full shadow transform transition-transform duration-300 ease-in-out"></div>
+    </div>
   </div>
 
   <!-- Header -->
@@ -84,15 +89,23 @@
       const html = document.documentElement;
       html.classList.toggle('dark');
       localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+
+      // Move toggle circle visually
+      const toggle = document.getElementById('dark-toggle');
+      if (toggle) {
+        toggle.checked = html.classList.contains('dark');
+      }
     }
 
-    // On page load
+    // On load
     if (localStorage.getItem('theme') === 'dark') {
       document.documentElement.classList.add('dark');
+      const toggle = document.getElementById('dark-toggle');
+      if (toggle) toggle.checked = true;
     }
   </script>
 
-  <!-- AOS JS -->
+  <!-- AOS Animations JS -->
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
   <script>
     AOS.init();
