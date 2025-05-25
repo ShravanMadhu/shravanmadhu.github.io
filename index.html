@@ -43,7 +43,7 @@
         <!-- Dark Mode Toggle Icon -->
         <button id="darkToggleBtn" onclick="toggleDark()" aria-label="Toggle Dark Mode"
           class="p-2 bg-gray-100 dark:bg-gray-800 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200 hover:scale-110">
-          <i id="themeIcon" class="lucide lucide-moon w-4 h-4"></i>
+          <i id="themeIcon" data-lucide="moon" class="w-5 h-5"></i>
         </button>
       </div>
     </div>
@@ -117,7 +117,8 @@
       // In your actual implementation, you can uncomment the line below:
       // localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
       
-      themeIcon.setAttribute('class', `lucide lucide-${isDark ? 'sun' : 'moon'} w-4 h-4`);
+      themeIcon.setAttribute('data-lucide', isDark ? 'sun' : 'moon');
+      themeIcon.className = 'w-5 h-5';
       lucide.createIcons();
     }
 
@@ -127,12 +128,13 @@
       /*
       if (localStorage.getItem('darkMode') === 'enabled') {
         document.documentElement.classList.add('dark');
-        themeIcon.setAttribute('class', 'lucide lucide-sun w-4 h-4');
+        themeIcon.setAttribute('data-lucide', 'sun');
       } else {
-        themeIcon.setAttribute('class', 'lucide lucide-moon w-4 h-4');
+        themeIcon.setAttribute('data-lucide', 'moon');
       }
       */
-      themeIcon.setAttribute('class', 'lucide lucide-moon w-4 h-4');
+      themeIcon.setAttribute('data-lucide', 'moon');
+      themeIcon.className = 'w-5 h-5';
       lucide.createIcons();
     });
   </script>
