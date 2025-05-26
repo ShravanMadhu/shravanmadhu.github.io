@@ -68,25 +68,43 @@
     </p>
   </section>
 
+  <!-- Skills Section -->
+  <section id="skills" class="text-center py-12">
+    <h2 class="text-3xl font-semibold mb-6">Skills</h2>
+    <div class="max-w-4xl mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 px-4">
+      <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow hover:scale-105 transition text-sm font-medium">💡 Tailwind CSS</div>
+      <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow hover:scale-105 transition text-sm font-medium">⚙️ JavaScript</div>
+      <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow hover:scale-105 transition text-sm font-medium">⚛️ React Native</div>
+      <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow hover:scale-105 transition text-sm font-medium">🐍 Python</div>
+      <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow hover:scale-105 transition text-sm font-medium">🌐 HTML/CSS</div>
+      <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow hover:scale-105 transition text-sm font-medium">🧠 LangChain</div>
+      <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow hover:scale-105 transition text-sm font-medium">🛠️ Django</div>
+      <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow hover:scale-105 transition text-sm font-medium">📦 Git/GitHub</div>
+    </div>
+  </section>
+
   <!-- Projects Section -->
   <main id="projects" class="max-w-5xl mx-auto grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 px-4 mt-10">
-    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 hover:scale-105 transition-all duration-300">
+    <a href="https://github.com/shravanmadhu/personal-website" target="_blank"
+       class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 hover:shadow-lg hover:scale-105 transition-all duration-300 block">
       <div class="text-3xl mb-4">🌐</div>
       <h2 class="text-xl font-semibold mb-2">Personal Website</h2>
       <p class="text-gray-600 dark:text-gray-300 text-sm">Built using HTML & Tailwind, hosted on GitHub Pages. Includes my projects, resume, and blog.</p>
-    </div>
-    
-    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 hover:scale-105 transition-all duration-300">
+    </a>
+
+    <a href="https://github.com/shravanmadhu/wiki-chatbot" target="_blank"
+       class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 hover:shadow-lg hover:scale-105 transition-all duration-300 block">
       <div class="text-3xl mb-4">🤖</div>
-      <h2 class="text-xl font-semibent mb-2">AI Chatbot</h2>
+      <h2 class="text-xl font-semibold mb-2">AI Chatbot</h2>
       <p class="text-gray-600 dark:text-gray-300 text-sm">A Wikipedia-based Q&A bot with contextual memory built using LangChain and ChromaDB.</p>
-    </div>
-    
-    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 hover:scale-105 transition-all duration-300">
+    </a>
+
+    <a href="https://github.com/shravanmadhu/esp32-rover" target="_blank"
+       class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 hover:shadow-lg hover:scale-105 transition-all duration-300 block">
       <div class="text-3xl mb-4">🚗</div>
       <h2 class="text-xl font-semibold mb-2">Rover App</h2>
       <p class="text-gray-600 dark:text-gray-300 text-sm">React Native app controlling an ESP32-powered rover with Bluetooth and voice support.</p>
-    </div>
+    </a>
   </main>
 
   <!-- Footer / Contact -->
@@ -112,28 +130,13 @@
       const html = document.documentElement;
       html.classList.toggle('dark');
       const isDark = html.classList.contains('dark');
-      
-      // Note: localStorage is not available in this environment
-      // In your actual implementation, you can uncomment the line below:
-      // localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
-      
       themeIcon.setAttribute('data-lucide', isDark ? 'sun' : 'moon');
       themeIcon.className = 'w-5 h-5';
       lucide.createIcons();
     }
 
     document.addEventListener('DOMContentLoaded', function () {
-      // Note: localStorage is not available in this environment
-      // In your actual implementation, you can uncomment the lines below:
-      /*
-      if (localStorage.getItem('darkMode') === 'enabled') {
-        document.documentElement.classList.add('dark');
-        themeIcon.setAttribute('data-lucide', 'sun');
-      } else {
-        themeIcon.setAttribute('data-lucide', 'moon');
-      }
-      */
-      themeIcon.setAttribute('data-lucide', 'moon');
+      themeIcon.setAttribute('data-lucide', document.documentElement.classList.contains('dark') ? 'sun' : 'moon');
       themeIcon.className = 'w-5 h-5';
       lucide.createIcons();
     });
