@@ -1,183 +1,252 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Shravan Madhu | Full Stack Developer</title>
-
-  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Configure Tailwind dark mode -->
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          animation: {
-            'float': 'float 6s ease-in-out infinite',
-            'pulse-slow': 'pulse 3s infinite',
-            'bounce-slow': 'bounce 2s infinite',
-          }
-        }
-      }
-    }
-  </script>
-
-  <!-- Lucide Icons CDN -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-
-  <!-- Inter Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
   <style>
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: 'JetBrains Mono', monospace;
     }
     
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-20px); }
+    .terminal-window {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      border-radius: 12px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     }
     
-    .gradient-text {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+    .terminal-header {
+      background: #334155;
+      border-radius: 12px 12px 0 0;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
     
-    .gradient-bg {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    .terminal-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
     }
     
-    .card-hover {
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    .terminal-content {
+      padding: 24px;
+      background: #0f172a;
+      border-radius: 0 0 12px 12px;
+      min-height: 400px;
     }
     
-    .card-hover:hover {
-      transform: translateY(-8px) scale(1.02);
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    .typing-animation {
+      border-right: 2px solid #10b981;
+      animation: blink 1s infinite;
     }
     
-    .parallax-bg {
-      background-image: 
-        radial-gradient(circle at 25% 25%, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 75% 75%, rgba(118, 75, 162, 0.1) 0%, transparent 50%);
+    @keyframes blink {
+      0%, 50% { border-color: #10b981; }
+      51%, 100% { border-color: transparent; }
+    }
+    
+    .code-block {
+      background: #1e293b;
+      border: 1px solid #374151;
+      border-radius: 8px;
+      padding: 16px;
+      margin: 16px 0;
+      position: relative;
+      overflow-x: auto;
+    }
+    
+    .line-numbers {
+      color: #6b7280;
+      user-select: none;
+      margin-right: 16px;
+    }
+    
+    .syntax-keyword { color: #c084fc; }
+    .syntax-string { color: #34d399; }
+    .syntax-comment { color: #6b7280; }
+    .syntax-function { color: #60a5fa; }
+    .syntax-variable { color: #fbbf24; }
+    
+    .glitch {
+      animation: glitch 0.3s infinite;
+    }
+    
+    @keyframes glitch {
+      0% { transform: translate(0); }
+      20% { transform: translate(-2px, 2px); }
+      40% { transform: translate(-2px, -2px); }
+      60% { transform: translate(2px, 2px); }
+      80% { transform: translate(2px, -2px); }
+      100% { transform: translate(0); }
+    }
+    
+    .matrix-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      opacity: 0.1;
+      z-index: -1;
+    }
+    
+    .skill-progress {
+      background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+      height: 4px;
+      border-radius: 2px;
+      transition: width 2s ease-in-out;
     }
   </style>
 </head>
 
-<body class="bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-100 transition-all duration-300 min-h-screen">
+<body class="bg-gray-900 text-green-400 min-h-screen overflow-x-hidden">
+  <!-- Matrix Background Effect -->
+  <canvas class="matrix-bg" id="matrixCanvas"></canvas>
 
-  <!-- Sticky Navigation Bar -->
-  <nav class="sticky top-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md shadow-lg z-50 border-b border-gray-200 dark:border-gray-700">
-    <div class="max-w-6xl mx-auto flex justify-between items-center p-4">
-      <h1 class="font-bold text-xl gradient-text">Shravan Madhu</h1>
-      <div class="flex items-center gap-8">
-        <ul class="hidden md:flex gap-8 text-sm font-medium">
-          <li><a href="#home" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Home</a></li>
-          <li><a href="#about" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">About</a></li>
-          <li><a href="#skills" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Skills</a></li>
-          <li><a href="#projects" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Projects</a></li>
-          <li><a href="#contact" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Contact</a></li>
-        </ul>
-        <!-- Mobile Menu Button -->
-        <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800" onclick="toggleMobileMenu()">
-          <i data-lucide="menu" class="w-5 h-5"></i>
+  <!-- Navigation -->
+  <nav class="fixed top-0 w-full bg-gray-900/80 backdrop-blur-md border-b border-gray-700 z-50">
+    <div class="max-w-6xl mx-auto px-4 py-3">
+      <div class="flex justify-between items-center">
+        <div class="text-green-400 font-bold">
+          <span class="text-gray-500">~/</span>shravan-madhu<span class="typing-animation">&nbsp;</span>
+        </div>
+        <div class="hidden md:flex space-x-6 text-sm">
+          <a href="#home" class="hover:text-green-300 transition-colors">./home</a>
+          <a href="#about" class="hover:text-green-300 transition-colors">./about</a>
+          <a href="#skills" class="hover:text-green-300 transition-colors">./skills</a>
+          <a href="#projects" class="hover:text-green-300 transition-colors">./projects</a>
+          <a href="#contact" class="hover:text-green-300 transition-colors">./contact</a>
+        </div>
+        <button id="mobileMenuBtn" class="md:hidden text-green-400 hover:text-green-300">
+          [MENU]
         </button>
-        <!-- Dark Mode Toggle Icon -->
-        <button id="darkToggleBtn" onclick="toggleDark()" aria-label="Toggle Dark Mode"
-          class="p-2 bg-gray-100 dark:bg-gray-800 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200 hover:scale-110">
-          <i id="themeIcon" data-lucide="moon" class="w-5 h-5"></i>
-        </button>
-      </div>
-    </div>
-    <!-- Mobile Menu -->
-    <div id="mobileMenu" class="hidden md:hidden bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
-      <div class="px-4 py-2 space-y-2">
-        <a href="#home" class="block py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Home</a>
-        <a href="#about" class="block py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">About</a>
-        <a href="#skills" class="block py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Skills</a>
-        <a href="#projects" class="block py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Projects</a>
-        <a href="#contact" class="block py-2 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Contact</a>
       </div>
     </div>
   </nav>
 
   <!-- Hero Section -->
-  <header id="home" class="relative text-center py-20 px-4 parallax-bg overflow-hidden">
-    <div class="relative z-10">
-      <div class="mb-6">
-        <div class="w-32 h-32 mx-auto rounded-full gradient-bg p-1 animate-pulse-slow">
-          <div class="w-full h-full rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-4xl">
-            👨‍💻
+  <section id="home" class="pt-24 pb-12 px-4">
+    <div class="max-w-6xl mx-auto">
+      <div class="terminal-window mx-auto max-w-4xl">
+        <div class="terminal-header">
+          <div class="terminal-dot bg-red-500"></div>
+          <div class="terminal-dot bg-yellow-500"></div>
+          <div class="terminal-dot bg-green-500"></div>
+          <span class="text-gray-300 text-sm ml-4">shravan@localhost:~$</span>
+        </div>
+        <div class="terminal-content">
+          <div class="space-y-4">
+            <div><span class="text-gray-500">$</span> whoami</div>
+            <div class="ml-4">
+              <div class="text-2xl md:text-4xl font-bold mb-4">
+                <span class="text-blue-400">Shravan</span> <span class="text-green-400">Madhu</span>
+              </div>
+              <div class="text-gray-300">Full Stack Developer & Computer Science Student</div>
+            </div>
+            
+            <div class="mt-8"><span class="text-gray-500">$</span> cat bio.txt</div>
+            <div class="ml-4 text-gray-300 leading-relaxed">
+              I build creative tech solutions and cool digital experiences<br>
+              that make a difference. Passionate about AI, web development,<br>
+              and turning ideas into reality through code.
+            </div>
+            
+            <div class="mt-8"><span class="text-gray-500">$</span> ls -la skills/</div>
+            <div class="ml-4 grid grid-cols-2 md:grid-cols-4 gap-2 text-sm">
+              <div class="text-blue-400">JavaScript/</div>
+              <div class="text-purple-400">Python/</div>
+              <div class="text-cyan-400">React/</div>
+              <div class="text-yellow-400">Django/</div>
+              <div class="text-green-400">Node.js/</div>
+              <div class="text-red-400">HTML/CSS/</div>
+              <div class="text-indigo-400">AI/ML/</div>
+              <div class="text-pink-400">IoT/</div>
+            </div>
+            
+            <div class="mt-8 flex flex-wrap gap-4">
+              <button onclick="downloadResume()" class="px-6 py-2 bg-green-600 hover:bg-green-700 text-gray-900 rounded transition-colors font-medium">
+                ./download-resume.sh
+              </button>
+              <a href="#projects" class="px-6 py-2 border border-green-600 text-green-400 hover:bg-green-600 hover:text-gray-900 rounded transition-colors font-medium">
+                cd projects/
+              </a>
+            </div>
           </div>
         </div>
-      </div>
-      <h1 class="text-6xl md:text-7xl font-bold mb-6 animate-float">
-        Hi, I'm <span class="gradient-text">Shravan</span> 👋
-      </h1>
-      <p class="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-4 max-w-3xl mx-auto">
-        Full Stack Developer & Computer Science Student
-      </p>
-      <p class="text-lg text-gray-500 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
-        I build creative tech solutions and cool digital experiences that make a difference
-      </p>
-      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-        <a href="resume.pdf" download class="gradient-bg hover:opacity-90 text-white px-8 py-4 rounded-full transition-all duration-300 inline-block font-semibold text-lg shadow-lg hover:shadow-xl hover:scale-105">
-          <i data-lucide="download" class="w-5 h-5 inline mr-2"></i>
-          Download Resume
-        </a>
-        <a href="#projects" class="border-2 border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400 px-8 py-4 rounded-full transition-all duration-300 inline-block font-semibold text-lg hover:bg-blue-600 hover:text-white dark:hover:bg-blue-400 dark:hover:text-gray-900">
-          View My Work
-        </a>
       </div>
     </div>
-    <!-- Floating Elements -->
-    <div class="absolute top-20 left-10 text-4xl animate-bounce-slow opacity-20">💡</div>
-    <div class="absolute top-40 right-10 text-4xl animate-float opacity-20">🚀</div>
-    <div class="absolute bottom-20 left-20 text-4xl animate-pulse opacity-20">⚡</div>
-  </header>
+  </section>
 
   <!-- About Section -->
-  <section id="about" class="py-20 px-4">
-    <div class="max-w-4xl mx-auto">
-      <h2 class="text-4xl font-bold text-center mb-12">
-        About <span class="gradient-text">Me</span>
-      </h2>
-      <div class="grid md:grid-cols-2 gap-12 items-center">
-        <div class="space-y-6">
-          <p class="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
-            I'm a passionate Computer Science student with a love for creating intelligent and innovative tech solutions. My journey spans from web applications to AI chatbots and hardware integrations.
-          </p>
-          <p class="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
-            I believe in designing experiences that are not just functional, but also delightful and user-friendly. Every project is an opportunity to learn something new and push the boundaries of what's possible.
-          </p>
-          <div class="flex flex-wrap gap-3 mt-6">
-            <span class="px-4 py-2 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm font-medium">Problem Solver</span>
-            <span class="px-4 py-2 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full text-sm font-medium">Creative Thinker</span>
-            <span class="px-4 py-2 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded-full text-sm font-medium">Tech Enthusiast</span>
-          </div>
+  <section id="about" class="py-16 px-4">
+    <div class="max-w-6xl mx-auto">
+      <div class="terminal-window">
+        <div class="terminal-header">
+          <div class="terminal-dot bg-red-500"></div>
+          <div class="terminal-dot bg-yellow-500"></div>
+          <div class="terminal-dot bg-green-500"></div>
+          <span class="text-gray-300 text-sm ml-4">about.js - Visual Studio Code</span>
         </div>
-        <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg">
-          <h3 class="text-xl font-semibold mb-6">Quick Stats</h3>
-          <div class="space-y-4">
-            <div class="flex justify-between items-center">
-              <span class="text-gray-600 dark:text-gray-400">Projects Completed</span>
-              <span class="font-bold text-xl gradient-text">15+</span>
+        <div class="terminal-content">
+          <div class="code-block">
+            <div class="flex">
+              <div class="line-numbers text-xs">
+                <div>1</div>
+                <div>2</div>
+                <div>3</div>
+                <div>4</div>
+                <div>5</div>
+                <div>6</div>
+                <div>7</div>
+                <div>8</div>
+                <div>9</div>
+                <div>10</div>
+                <div>11</div>
+                <div>12</div>
+                <div>13</div>
+                <div>14</div>
+                <div>15</div>
+              </div>
+              <div class="flex-1 text-sm">
+                <div><span class="syntax-keyword">const</span> <span class="syntax-variable">developer</span> = {</div>
+                <div class="ml-4"><span class="syntax-string">name</span>: <span class="syntax-string">"Shravan Madhu"</span>,</div>
+                <div class="ml-4"><span class="syntax-string">role</span>: <span class="syntax-string">"Full Stack Developer"</span>,</div>
+                <div class="ml-4"><span class="syntax-string">location</span>: <span class="syntax-string">"Computer Science Student"</span>,</div>
+                <div class="ml-4"><span class="syntax-string">passions</span>: [</div>
+                <div class="ml-8"><span class="syntax-string">"Problem Solving"</span>,</div>
+                <div class="ml-8"><span class="syntax-string">"Creative Technology"</span>,</div>
+                <div class="ml-8"><span class="syntax-string">"AI & Machine Learning"</span>,</div>
+                <div class="ml-8"><span class="syntax-string">"User Experience"</span></div>
+                <div class="ml-4">],</div>
+                <div class="ml-4"><span class="syntax-function">getCurrentFocus</span>() {</div>
+                <div class="ml-8"><span class="syntax-keyword">return</span> <span class="syntax-string">"Building intelligent web applications"</span>;</div>
+                <div class="ml-4">}</div>
+                <div>};</div>
+                <div><span class="syntax-comment">// Always learning, always building 🚀</span></div>
+              </div>
             </div>
-            <div class="flex justify-between items-center">
-              <span class="text-gray-600 dark:text-gray-400">Technologies Used</span>
-              <span class="font-bold text-xl gradient-text">10+</span>
+          </div>
+          
+          <div class="grid md:grid-cols-3 gap-6 mt-8">
+            <div class="bg-gray-800 p-4 rounded-lg border border-gray-700">
+              <div class="text-green-400 text-2xl font-bold">15+</div>
+              <div class="text-gray-400 text-sm">Projects Completed</div>
             </div>
-            <div class="flex justify-between items-center">
-              <span class="text-gray-600 dark:text-gray-400">Years of Experience</span>
-              <span class="font-bold text-xl gradient-text">2+</span>
+            <div class="bg-gray-800 p-4 rounded-lg border border-gray-700">
+              <div class="text-blue-400 text-2xl font-bold">10+</div>
+              <div class="text-gray-400 text-sm">Technologies Mastered</div>
             </div>
-            <div class="flex justify-between items-center">
-              <span class="text-gray-600 dark:text-gray-400">Current Focus</span>
-              <span class="font-bold text-lg gradient-text">AI & Web Dev</span>
+            <div class="bg-gray-800 p-4 rounded-lg border border-gray-700">
+              <div class="text-purple-400 text-2xl font-bold">2+</div>
+              <div class="text-gray-400 text-sm">Years Experience</div>
             </div>
           </div>
         </div>
@@ -186,92 +255,80 @@
   </section>
 
   <!-- Skills Section -->
-  <section id="skills" class="py-20 px-4 bg-gray-100 dark:bg-gray-800">
+  <section id="skills" class="py-16 px-4">
     <div class="max-w-6xl mx-auto">
-      <h2 class="text-4xl font-bold text-center mb-4">
-        My <span class="gradient-text">Skills</span>
-      </h2>
-      <p class="text-center text-gray-600 dark:text-gray-400 mb-12 text-lg">
-        Technologies and tools I work with
-      </p>
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-        <div class="bg-white dark:bg-gray-700 p-6 rounded-xl shadow-md card-hover text-center group">
-          <div class="text-3xl mb-3 group-hover:scale-110 transition-transform">💡</div>
-          <h3 class="font-semibold text-sm mb-1">Tailwind CSS</h3>
-          <div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
-            <div class="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full w-4/5"></div>
-          </div>
+      <div class="terminal-window">
+        <div class="terminal-header">
+          <div class="terminal-dot bg-red-500"></div>
+          <div class="terminal-dot bg-yellow-500"></div>
+          <div class="terminal-dot bg-green-500"></div>
+          <span class="text-gray-300 text-sm ml-4">skills.json</span>
         </div>
-        
-        <div class="bg-white dark:bg-gray-700 p-6 rounded-xl shadow-md card-hover text-center group">
-          <div class="text-3xl mb-3 group-hover:scale-110 transition-transform">⚙️</div>
-          <h3 class="font-semibold text-sm mb-1">JavaScript</h3>
-          <div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
-            <div class="bg-gradient-to-r from-yellow-500 to-orange-500 h-2 rounded-full w-4/5"></div>
-          </div>
-        </div>
-        
-        <div class="bg-white dark:bg-gray-700 p-6 rounded-xl shadow-md card-hover text-center group">
-          <div class="text-3xl mb-3 group-hover:scale-110 transition-transform">⚛️</div>
-          <h3 class="font-semibold text-sm mb-1">React Native</h3>
-          <div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
-            <div class="bg-gradient-to-r from-cyan-500 to-blue-500 h-2 rounded-full w-3/5"></div>
-          </div>
-        </div>
-        
-        <div class="bg-white dark:bg-gray-700 p-6 rounded-xl shadow-md card-hover text-center group">
-          <div class="text-3xl mb-3 group-hover:scale-110 transition-transform">🐍</div>
-          <h3 class="font-semibold text-sm mb-1">Python</h3>
-          <div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
-            <div class="bg-gradient-to-r from-green-500 to-blue-500 h-2 rounded-full w-5/6"></div>
-          </div>
-        </div>
-        
-        <div class="bg-white dark:bg-gray-700 p-6 rounded-xl shadow-md card-hover text-center group">
-          <div class="text-3xl mb-3 group-hover:scale-110 transition-transform">🌐</div>
-          <h3 class="font-semibold text-sm mb-1">HTML/CSS</h3>
-          <div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
-            <div class="bg-gradient-to-r from-red-500 to-pink-500 h-2 rounded-full w-5/6"></div>
-          </div>
-        </div>
-        
-        <div class="bg-white dark:bg-gray-700 p-6 rounded-xl shadow-md card-hover text-center group">
-          <div class="text-3xl mb-3 group-hover:scale-110 transition-transform">🧠</div>
-          <h3 class="font-semibold text-sm mb-1">LangChain</h3>
-          <div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
-            <div class="bg-gradient-to-r from-purple-500 to-indigo-500 h-2 rounded-full w-3/5"></div>
-          </div>
-        </div>
-        
-        <div class="bg-white dark:bg-gray-700 p-6 rounded-xl shadow-md card-hover text-center group">
-          <div class="text-3xl mb-3 group-hover:scale-110 transition-transform">🛠️</div>
-          <h3 class="font-semibold text-sm mb-1">Django</h3>
-          <div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
-            <div class="bg-gradient-to-r from-green-600 to-green-400 h-2 rounded-full w-3/4"></div>
-          </div>
-        </div>
-        
-        <div class="bg-white dark:bg-gray-700 p-6 rounded-xl shadow-md card-hover text-center group">
-          <div class="text-3xl mb-3 group-hover:scale-110 transition-transform">📦</div>
-          <h3 class="font-semibold text-sm mb-1">Git/GitHub</h3>
-          <div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
-            <div class="bg-gradient-to-r from-gray-700 to-gray-500 h-2 rounded-full w-4/5"></div>
-          </div>
-        </div>
-        
-        <div class="bg-white dark:bg-gray-700 p-6 rounded-xl shadow-md card-hover text-center group">
-          <div class="text-3xl mb-3 group-hover:scale-110 transition-transform">🔧</div>
-          <h3 class="font-semibold text-sm mb-1">ESP32/IoT</h3>
-          <div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
-            <div class="bg-gradient-to-r from-red-500 to-orange-500 h-2 rounded-full w-3/5"></div>
-          </div>
-        </div>
-        
-        <div class="bg-white dark:bg-gray-700 p-6 rounded-xl shadow-md card-hover text-center group">
-          <div class="text-3xl mb-3 group-hover:scale-110 transition-transform">🤖</div>
-          <h3 class="font-semibold text-sm mb-1">Machine Learning</h3>
-          <div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
-            <div class="bg-gradient-to-r from-indigo-500 to-purple-500 h-2 rounded-full w-2/3"></div>
+        <div class="terminal-content">
+          <div class="space-y-6">
+            <div><span class="text-gray-500">$</span> cat skills.json | jq '.technologies'</div>
+            
+            <div class="grid gap-4">
+              <div class="skill-item">
+                <div class="flex justify-between mb-2">
+                  <span class="text-yellow-400">JavaScript/TypeScript</span>
+                  <span class="text-gray-400">85%</span>
+                </div>
+                <div class="bg-gray-700 rounded-full h-1">
+                  <div class="skill-progress" style="width: 85%"></div>
+                </div>
+              </div>
+              
+              <div class="skill-item">
+                <div class="flex justify-between mb-2">
+                  <span class="text-blue-400">Python</span>
+                  <span class="text-gray-400">90%</span>
+                </div>
+                <div class="bg-gray-700 rounded-full h-1">
+                  <div class="skill-progress" style="width: 90%"></div>
+                </div>
+              </div>
+              
+              <div class="skill-item">
+                <div class="flex justify-between mb-2">
+                  <span class="text-cyan-400">React/React Native</span>
+                  <span class="text-gray-400">80%</span>
+                </div>
+                <div class="bg-gray-700 rounded-full h-1">
+                  <div class="skill-progress" style="width: 80%"></div>
+                </div>
+              </div>
+              
+              <div class="skill-item">
+                <div class="flex justify-between mb-2">
+                  <span class="text-green-400">Django/Node.js</span>
+                  <span class="text-gray-400">75%</span>
+                </div>
+                <div class="bg-gray-700 rounded-full h-1">
+                  <div class="skill-progress" style="width: 75%"></div>
+                </div>
+              </div>
+              
+              <div class="skill-item">
+                <div class="flex justify-between mb-2">
+                  <span class="text-purple-400">AI/ML (LangChain)</span>
+                  <span class="text-gray-400">70%</span>
+                </div>
+                <div class="bg-gray-700 rounded-full h-1">
+                  <div class="skill-progress" style="width: 70%"></div>
+                </div>
+              </div>
+              
+              <div class="skill-item">
+                <div class="flex justify-between mb-2">
+                  <span class="text-red-400">IoT/ESP32</span>
+                  <span class="text-gray-400">65%</span>
+                </div>
+                <div class="bg-gray-700 rounded-full h-1">
+                  <div class="skill-progress" style="width: 65%"></div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -279,158 +336,229 @@
   </section>
 
   <!-- Projects Section -->
-  <section id="projects" class="py-20 px-4">
+  <section id="projects" class="py-16 px-4">
     <div class="max-w-6xl mx-auto">
-      <h2 class="text-4xl font-bold text-center mb-4">
-        Featured <span class="gradient-text">Projects</span>
-      </h2>
-      <p class="text-center text-gray-600 dark:text-gray-400 mb-12 text-lg">
-        Some of my recent work that I'm proud of
-      </p>
-      <div class="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        <a href="https://github.com/shravanmadhu/personal-website" target="_blank"
-           class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 card-hover block group border border-gray-200 dark:border-gray-700">
-          <div class="text-4xl mb-4 group-hover:scale-110 transition-transform">🌐</div>
-          <h3 class="text-xl font-bold mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">Personal Website</h3>
-          <p class="text-gray-600 dark:text-gray-300 text-sm mb-4 leading-relaxed">
-            A responsive portfolio website built with HTML, Tailwind CSS, and JavaScript. Features dark mode, smooth scrolling, and modern design principles.
-          </p>
-          <div class="flex flex-wrap gap-2 mb-4">
-            <span class="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded text-xs">HTML</span>
-            <span class="px-2 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded text-xs">Tailwind</span>
-            <span class="px-2 py-1 bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 rounded text-xs">JavaScript</span>
+      <div class="terminal-window">
+        <div class="terminal-header">
+          <div class="terminal-dot bg-red-500"></div>
+          <div class="terminal-dot bg-yellow-500"></div>
+          <div class="terminal-dot bg-green-500"></div>
+          <span class="text-gray-300 text-sm ml-4">projects/</span>
+        </div>
+        <div class="terminal-content">
+          <div><span class="text-gray-500">$</span> git log --oneline --graph</div>
+          
+          <div class="mt-6 space-y-6">
+            <div class="border border-gray-700 rounded-lg p-6 hover:border-green-500 transition-colors group">
+              <div class="flex items-start justify-between mb-4">
+                <div>
+                  <h3 class="text-xl font-bold text-green-400 group-hover:text-green-300">🌐 Personal Website</h3>
+                  <div class="text-gray-400 text-sm mt-1">git commit -m "feat: responsive portfolio with dark mode"</div>
+                </div>
+                <a href="https://github.com/shravanmadhu/personal-website" target="_blank" 
+                   class="text-blue-400 hover:text-blue-300 transition-colors">
+                  [VIEW →]
+                </a>
+              </div>
+              <p class="text-gray-300 mb-4">
+                A responsive portfolio website built with HTML, Tailwind CSS, and JavaScript. Features dark mode, smooth scrolling, and modern design principles.
+              </p>
+              <div class="flex flex-wrap gap-2">
+                <span class="px-2 py-1 bg-orange-900 text-orange-300 rounded text-xs">HTML</span>
+                <span class="px-2 py-1 bg-blue-900 text-blue-300 rounded text-xs">Tailwind</span>
+                <span class="px-2 py-1 bg-yellow-900 text-yellow-300 rounded text-xs">JavaScript</span>
+              </div>
+            </div>
+            
+            <div class="border border-gray-700 rounded-lg p-6 hover:border-green-500 transition-colors group">
+              <div class="flex items-start justify-between mb-4">
+                <div>
+                  <h3 class="text-xl font-bold text-green-400 group-hover:text-green-300">🤖 AI Chatbot</h3>
+                  <div class="text-gray-400 text-sm mt-1">git commit -m "feat: intelligent Q&A with contextual memory"</div>
+                </div>
+                <a href="https://github.com/shravanmadhu/wiki-chatbot" target="_blank" 
+                   class="text-blue-400 hover:text-blue-300 transition-colors">
+                  [VIEW →]
+                </a>
+              </div>
+              <p class="text-gray-300 mb-4">
+                An intelligent Q&A chatbot that leverages Wikipedia data with contextual memory using LangChain and ChromaDB for semantic search.
+              </p>
+              <div class="flex flex-wrap gap-2">
+                <span class="px-2 py-1 bg-green-900 text-green-300 rounded text-xs">Python</span>
+                <span class="px-2 py-1 bg-purple-900 text-purple-300 rounded text-xs">LangChain</span>
+                <span class="px-2 py-1 bg-indigo-900 text-indigo-300 rounded text-xs">ChromaDB</span>
+              </div>
+            </div>
+            
+            <div class="border border-gray-700 rounded-lg p-6 hover:border-green-500 transition-colors group">
+              <div class="flex items-start justify-between mb-4">
+                <div>
+                  <h3 class="text-xl font-bold text-green-400 group-hover:text-green-300">🚗 ESP32 Rover App</h3>
+                  <div class="text-gray-400 text-sm mt-1">git commit -m "feat: bluetooth-controlled rover with voice commands"</div>
+                </div>
+                <a href="https://github.com/shravanmadhu/esp32-rover" target="_blank" 
+                   class="text-blue-400 hover:text-blue-300 transition-colors">
+                  [VIEW →]
+                </a>
+              </div>
+              <p class="text-gray-300 mb-4">
+                A React Native mobile application for controlling an ESP32-powered rover with real-time Bluetooth communication and voice command integration.
+              </p>
+              <div class="flex flex-wrap gap-2">
+                <span class="px-2 py-1 bg-cyan-900 text-cyan-300 rounded text-xs">React Native</span>
+                <span class="px-2 py-1 bg-red-900 text-red-300 rounded text-xs">ESP32</span>
+                <span class="px-2 py-1 bg-blue-900 text-blue-300 rounded text-xs">Bluetooth</span>
+              </div>
+            </div>
           </div>
-          <div class="flex items-center text-blue-600 dark:text-blue-400 text-sm font-medium">
-            <span>View Project</span>
-            <i data-lucide="external-link" class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform"></i>
+          
+          <div class="mt-8 text-center">
+            <a href="https://github.com/shravanmadhu" target="_blank" 
+               class="inline-block px-6 py-2 border border-green-600 text-green-400 hover:bg-green-600 hover:text-gray-900 rounded transition-colors">
+              git remote show origin
+            </a>
           </div>
-        </a>
-
-        <a href="https://github.com/shravanmadhu/wiki-chatbot" target="_blank"
-           class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 card-hover block group border border-gray-200 dark:border-gray-700">
-          <div class="text-4xl mb-4 group-hover:scale-110 transition-transform">🤖</div>
-          <h3 class="text-xl font-bold mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">AI Chatbot</h3>
-          <p class="text-gray-600 dark:text-gray-300 text-sm mb-4 leading-relaxed">
-            An intelligent Q&A chatbot that leverages Wikipedia data with contextual memory using LangChain and ChromaDB for semantic search and conversation flow.
-          </p>
-          <div class="flex flex-wrap gap-2 mb-4">
-            <span class="px-2 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded text-xs">Python</span>
-            <span class="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded text-xs">LangChain</span>
-            <span class="px-2 py-1 bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200 rounded text-xs">ChromaDB</span>
-          </div>
-          <div class="flex items-center text-blue-600 dark:text-blue-400 text-sm font-medium">
-            <span>View Project</span>
-            <i data-lucide="external-link" class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform"></i>
-          </div>
-        </a>
-
-        <a href="https://github.com/shravanmadhu/esp32-rover" target="_blank"
-           class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 card-hover block group border border-gray-200 dark:border-gray-700">
-          <div class="text-4xl mb-4 group-hover:scale-110 transition-transform">🚗</div>
-          <h3 class="text-xl font-bold mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">ESP32 Rover App</h3>
-          <p class="text-gray-600 dark:text-gray-300 text-sm mb-4 leading-relaxed">
-            A React Native mobile application for controlling an ESP32-powered rover with real-time Bluetooth communication and voice command integration.
-          </p>
-          <div class="flex flex-wrap gap-2 mb-4">
-            <span class="px-2 py-1 bg-cyan-100 dark:bg-cyan-900 text-cyan-800 dark:text-cyan-200 rounded text-xs">React Native</span>
-            <span class="px-2 py-1 bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 rounded text-xs">ESP32</span>
-            <span class="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded text-xs">Bluetooth</span>
-          </div>
-          <div class="flex items-center text-blue-600 dark:text-blue-400 text-sm font-medium">
-            <span>View Project</span>
-            <i data-lucide="external-link" class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform"></i>
-          </div>
-        </a>
-      </div>
-      
-      <div class="text-center mt-12">
-        <a href="https://github.com/shravanmadhu" target="_blank" 
-           class="inline-flex items-center px-6 py-3 border-2 border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400 rounded-full hover:bg-blue-600 hover:text-white dark:hover:bg-blue-400 dark:hover:text-gray-900 transition-all duration-300 font-medium">
-          <i data-lucide="github" class="w-5 h-5 mr-2"></i>
-          View All Projects on GitHub
-        </a>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- Contact Section -->
-  <footer id="contact" class="py-20 px-4 bg-gray-100 dark:bg-gray-800">
-    <div class="max-w-4xl mx-auto text-center">
-      <h2 class="text-4xl font-bold mb-4">
-        Let's <span class="gradient-text">Connect</span>
-      </h2>
-      <p class="text-lg text-gray-600 dark:text-gray-400 mb-8">
-        I'm always open to discussing new opportunities and interesting projects
-      </p>
-      
-      <div class="grid md:grid-cols-3 gap-6 mb-8">
-        <a href="mailto:shravan@example.com" 
-           class="bg-white dark:bg-gray-700 p-6 rounded-xl shadow-md card-hover group">
-          <i data-lucide="mail" class="w-8 h-8 mx-auto mb-3 text-blue-600 dark:text-blue-400 group-hover:scale-110 transition-transform"></i>
-          <h3 class="font-semibold mb-2">Email</h3>
-          <p class="text-gray-600 dark:text-gray-400 text-sm">shravan@example.com</p>
-        </a>
-        
-        <a href="https://github.com/shravanmadhu" target="_blank"
-           class="bg-white dark:bg-gray-700 p-6 rounded-xl shadow-md card-hover group">
-          <i data-lucide="github" class="w-8 h-8 mx-auto mb-3 text-blue-600 dark:text-blue-400 group-hover:scale-110 transition-transform"></i>
-          <h3 class="font-semibold mb-2">GitHub</h3>
-          <p class="text-gray-600 dark:text-gray-400 text-sm">@shravanmadhu</p>
-        </a>
-        
-        <a href="https://linkedin.com/in/shravanmadhu" target="_blank"
-           class="bg-white dark:bg-gray-700 p-6 rounded-xl shadow-md card-hover group">
-          <i data-lucide="linkedin" class="w-8 h-8 mx-auto mb-3 text-blue-600 dark:text-blue-400 group-hover:scale-110 transition-transform"></i>
-          <h3 class="font-semibold mb-2">LinkedIn</h3>
-          <p class="text-gray-600 dark:text-gray-400 text-sm">@shravanmadhu</p>
-        </a>
-      </div>
-      
-      <div class="border-t border-gray-200 dark:border-gray-600 pt-8">
-        <p class="text-gray-500 dark:text-gray-400">
-          © 2024 Shravan Madhu. Built with ❤️ using HTML, Tailwind CSS, and JavaScript.
-        </p>
+  <section id="contact" class="py-16 px-4">
+    <div class="max-w-6xl mx-auto">
+      <div class="terminal-window">
+        <div class="terminal-header">
+          <div class="terminal-dot bg-red-500"></div>
+          <div class="terminal-dot bg-yellow-500"></div>
+          <div class="terminal-dot bg-green-500"></div>
+          <span class="text-gray-300 text-sm ml-4">contact.sh</span>
+        </div>
+        <div class="terminal-content">
+          <div class="space-y-4">
+            <div><span class="text-gray-500">$</span> ./contact.sh --help</div>
+            <div class="ml-4 text-gray-300">
+              Available connection methods:
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-6 mt-8">
+              <a href="mailto:shravan@example.com" 
+                 class="block p-6 border border-gray-700 rounded-lg hover:border-green-500 transition-colors group">
+                <div class="text-2xl mb-2">📧</div>
+                <div class="text-green-400 font-bold group-hover:text-green-300">--email</div>
+                <div class="text-gray-400 text-sm">shravan@example.com</div>
+              </a>
+              
+              <a href="https://github.com/shravanmadhu" target="_blank"
+                 class="block p-6 border border-gray-700 rounded-lg hover:border-green-500 transition-colors group">
+                <div class="text-2xl mb-2">🐙</div>
+                <div class="text-green-400 font-bold group-hover:text-green-300">--github</div>
+                <div class="text-gray-400 text-sm">@shravanmadhu</div>
+              </a>
+              
+              <a href="https://linkedin.com/in/shravanmadhu" target="_blank"
+                 class="block p-6 border border-gray-700 rounded-lg hover:border-green-500 transition-colors group">
+                <div class="text-2xl mb-2">💼</div>
+                <div class="text-green-400 font-bold group-hover:text-green-300">--linkedin</div>
+                <div class="text-gray-400 text-sm">@shravanmadhu</div>
+              </a>
+            </div>
+            
+            <div class="mt-8 pt-8 border-t border-gray-700 text-center text-gray-500 text-sm">
+              <div><span class="text-gray-500">$</span> echo "© 2024 Shravan Madhu | Built with ❤️ and lots of ☕"</div>
+              <div class="mt-2">© 2024 Shravan Madhu | Built with ❤️ and lots of ☕</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </footer>
+  </section>
 
-  <!-- Scripts -->
   <script>
-    const themeIcon = document.getElementById('themeIcon');
-
-    function toggleDark() {
-      const html = document.documentElement;
-      html.classList.toggle('dark');
-      const isDark = html.classList.contains('dark');
-      themeIcon.setAttribute('data-lucide', isDark ? 'sun' : 'moon');
-      themeIcon.className = 'w-5 h-5';
-      lucide.createIcons();
+    // Matrix Rain Effect
+    const canvas = document.getElementById('matrixCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    const matrix = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@#$%^&*()*&^%+-/~{[|`]}";
+    const matrixArray = matrix.split("");
+    
+    const font_size = 10;
+    const columns = canvas.width / font_size;
+    
+    const drops = [];
+    for(let x = 0; x < columns; x++) {
+      drops[x] = 1;
     }
-
-    function toggleMobileMenu() {
-      const mobileMenu = document.getElementById('mobileMenu');
-      const menuBtn = document.getElementById('mobileMenuBtn');
-      const icon = menuBtn.querySelector('i');
+    
+    function draw() {
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.04)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
       
-      mobileMenu.classList.toggle('hidden');
+      ctx.fillStyle = '#10b981';
+      ctx.font = font_size + 'px JetBrains Mono';
       
-      if (mobileMenu.classList.contains('hidden')) {
-        icon.setAttribute('data-lucide', 'menu');
-      } else {
-        icon.setAttribute('data-lucide', 'x');
+      for(let i = 0; i < drops.length; i++) {
+        const text = matrixArray[Math.floor(Math.random() * matrixArray.length)];
+        ctx.fillText(text, i * font_size, drops[i] * font_size);
+        
+        if(drops[i] * font_size > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
       }
-      lucide.createIcons();
     }
-
-    // Smooth scrolling for navigation links
+    
+    setInterval(draw, 35);
+    
+    // Resize canvas on window resize
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+    
+    // Smooth scrolling
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function (e) {
         e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-          target.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+    });
+    
+    // Mobile menu toggle
+    document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+      alert('Mobile menu functionality would be implemented here');
+    });
+    
+    // Download resume function
+    function downloadResume() {
+      alert('Resume download would be implemented here');
+    }
+    
+    // Animate skill bars on scroll
+    const observerOptions = {
+      threshold: 0.5,
+      rootMargin: '0px 0px -100px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const skillBars = entry.target.querySelectorAll('.skill-progress');
+          skillBars.forEach(bar => {
+            bar.style.width = bar.style.width || '0%';
           });
-          
-          // Close mobile menu if open
+        }
+      });
+    }, observerOptions);
+    
+    document.querySelector('#skills').addEventListener('load', () => {
+      observer.observe(document.querySelector('#skills'));
+    });
+  </script>
+</body>
+</html>
