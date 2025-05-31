@@ -5,10 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Shravan Madhu | Full Stack Developer</title>
 
-  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Configure Tailwind -->
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -27,390 +24,101 @@
     }
   </script>
 
-  <!-- Lucide Icons CDN -->
   <script src="https://unpkg.com/lucide@latest"></script>
-
-  <!-- Poppins Font -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 
   <style>
     body {
       font-family: 'Poppins', sans-serif;
     }
-    
     @keyframes gradient {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
-    
     @keyframes float {
       0%, 100% { transform: translateY(0px); }
       50% { transform: translateY(-10px); }
     }
-    
     @keyframes glow {
       from { box-shadow: 0 0 20px rgba(59, 130, 246, 0.5); }
       to { box-shadow: 0 0 30px rgba(59, 130, 246, 0.8); }
     }
-    
     .gradient-animate {
       background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
       background-size: 400% 400%;
       animation: gradient 15s ease infinite;
     }
-    
     .text-gradient {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-    
     .glass-effect {
       background: rgba(255, 255, 255, 0.1);
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.2);
     }
-    
     .dark .glass-effect {
       background: rgba(0, 0, 0, 0.3);
       border: 1px solid rgba(255, 255, 255, 0.1);
     }
-    
     .card-3d {
       transform-style: preserve-3d;
       transition: transform 0.3s ease;
     }
-    
     .card-3d:hover {
       transform: rotateY(5deg) rotateX(5deg) translateZ(10px);
     }
-    
     .neon-border {
       position: relative;
       border: 2px solid transparent;
       background: linear-gradient(45deg, #f06, #4a90e2, #7b68ee, #ff6b6b) border-box;
       border-radius: 12px;
     }
+    .light-mode {
+      background-color: white;
+      color: black;
+    }
+    .light-mode .text-gradient {
+      background: none;
+      -webkit-text-fill-color: black;
+    }
+    .light-mode .glass-effect {
+      background: rgba(255, 255, 255, 0.4);
+      color: black;
+    }
+    .light-mode .text-gray-300,
+    .light-mode .text-gray-400 {
+      color: #1a1a1a !important;
+    }
   </style>
 </head>
-
 <body class="bg-gray-900 text-white transition-all duration-500 min-h-screen">
-
-  <!-- Animated Background -->
-  <div class="fixed inset-0 -z-10">
-    <div class="absolute inset-0 bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 dark:from-gray-900 dark:via-gray-800 dark:to-black"></div>
-    <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.03"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-20"></div>
+  <div class="fixed inset-0 -z-10 dark:block hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900"></div>
+    <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%23ffffff\" fill-opacity=\"0.03\"%3E%3Cpath d=\"M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-20"></div>
   </div>
 
-  <!-- Navigation -->
-  <nav class="fixed top-0 w-full z-50 glass-effect border-b border-white/10">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between items-center h-16">
-        <div class="text-xl font-bold text-gradient">Shravan Madhu</div>
-        
-        <div class="hidden md:flex items-center space-x-8">
-          <a href="#home" class="hover:text-blue-400 transition-colors">Home</a>
-          <a href="#about" class="hover:text-blue-400 transition-colors">About</a>
-          <a href="#work" class="hover:text-blue-400 transition-colors">Work</a>
-          <a href="#contact" class="hover:text-blue-400 transition-colors">Contact</a>
-        </div>
-        
-        <div class="flex items-center space-x-4">
-          <!-- Dark Mode Toggle -->
-          <button id="themeToggle" onclick="toggleTheme()" 
-                  class="p-2 rounded-lg bg-white/10 hover:bg-white/20 transition-all duration-300 group">
-            <i id="themeIcon" data-lucide="sun" class="w-5 h-5 group-hover:scale-110 transition-transform"></i>
-          </button>
-          
-          <!-- Mobile Menu Button -->
-          <button id="mobileMenu" onclick="toggleMobile()" class="md:hidden p-2 rounded-lg bg-white/10 hover:bg-white/20">
-            <i data-lucide="menu" class="w-5 h-5"></i>
-          </button>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Mobile Menu -->
-    <div id="mobileNav" class="hidden md:hidden glass-effect border-t border-white/10">
-      <div class="px-4 py-4 space-y-2">
-        <a href="#home" class="block py-2 hover:text-blue-400 transition-colors">Home</a>
-        <a href="#about" class="block py-2 hover:text-blue-400 transition-colors">About</a>
-        <a href="#work" class="block py-2 hover:text-blue-400 transition-colors">Work</a>
-        <a href="#contact" class="block py-2 hover:text-blue-400 transition-colors">Contact</a>
-      </div>
-    </div>
-  </nav>
-
-  <!-- Hero Section -->
-  <section id="home" class="min-h-screen flex items-center justify-center pt-16 px-4">
-    <div class="text-center max-w-4xl mx-auto">
-      <div class="mb-8">
-        <div class="w-32 h-32 mx-auto rounded-full gradient-animate p-1 animate-glow">
-          <div class="w-full h-full rounded-full bg-gray-900 flex items-center justify-center text-5xl">
-            👨‍💻
-          </div>
-        </div>
-      </div>
-      
-      <h1 class="text-5xl md:text-7xl font-bold mb-6 animate-float">
-        Hi, I'm <span class="text-gradient">Shravan</span> 👋
-      </h1>
-      
-      <p class="text-xl md:text-2xl text-gray-300 mb-8 max-w-2xl mx-auto">
-        Full Stack Developer & Computer Science Student
-      </p>
-      
-      <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <a href="resume.pdf" download class="px-8 py-4 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full font-semibold hover:scale-105 transition-transform shadow-lg hover:shadow-purple-500/25 inline-flex items-center justify-center">
-          <i data-lucide="download" class="w-5 h-5 mr-2"></i>
-          Download Resume
-        </a>
-        <a href="#work" class="px-8 py-4 border border-white/30 rounded-full font-semibold hover:bg-white/10 transition-all">
-          View My Work
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- About Section -->
-  <section id="about" class="py-20 px-4">
-    <div class="max-w-6xl mx-auto">
-      <div class="text-center mb-16">
-        <h2 class="text-4xl md:text-5xl font-bold mb-4">
-          About <span class="text-gradient">Me</span>
-        </h2>
-        <div class="w-20 h-1 bg-gradient-to-r from-purple-500 to-blue-500 mx-auto"></div>
-      </div>
-      
-      <div class="grid lg:grid-cols-2 gap-12 items-center">
-        <div class="space-y-6">
-          <p class="text-lg text-gray-300 leading-relaxed">
-            I'm a passionate Computer Science student with a love for creating intelligent and innovative tech solutions. My journey spans from web applications to AI chatbots and hardware integrations.
-          </p>
-          <p class="text-lg text-gray-300 leading-relaxed">
-            I believe in designing experiences that are not just functional, but also delightful and user-friendly. Every project is an opportunity to learn something new and push the boundaries of what's possible.
-          </p>
-          
-          <div class="grid grid-cols-2 gap-4 mt-8">
-            <div class="glass-effect p-4 rounded-lg text-center card-3d">
-              <div class="text-3xl font-bold text-gradient">15+</div>
-              <div class="text-sm text-gray-400">Projects</div>
-            </div>
-            <div class="glass-effect p-4 rounded-lg text-center card-3d">
-              <div class="text-3xl font-bold text-gradient">2+</div>
-              <div class="text-sm text-gray-400">Years</div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="grid grid-cols-2 gap-4">
-          <div class="glass-effect p-6 rounded-xl card-3d">
-            <i data-lucide="code" class="w-8 h-8 text-blue-400 mb-4"></i>
-            <h3 class="font-semibold mb-2">Frontend</h3>
-            <p class="text-sm text-gray-400">React Native, HTML/CSS, Tailwind CSS</p>
-          </div>
-          <div class="glass-effect p-6 rounded-xl card-3d">
-            <i data-lucide="server" class="w-8 h-8 text-green-400 mb-4"></i>
-            <h3 class="font-semibold mb-2">Backend</h3>
-            <p class="text-sm text-gray-400">Python, Django, JavaScript</p>
-          </div>
-          <div class="glass-effect p-6 rounded-xl card-3d">
-            <i data-lucide="brain" class="w-8 h-8 text-purple-400 mb-4"></i>
-            <h3 class="font-semibold mb-2">AI/ML</h3>
-            <p class="text-sm text-gray-400">LangChain, Machine Learning</p>
-          </div>
-          <div class="glass-effect p-6 rounded-xl card-3d">
-            <i data-lucide="cpu" class="w-8 h-8 text-pink-400 mb-4"></i>
-            <h3 class="font-semibold mb-2">Hardware</h3>
-            <p class="text-sm text-gray-400">ESP32, IoT, Embedded Systems</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Work Section -->
-  <section id="work" class="py-20 px-4">
-    <div class="max-w-6xl mx-auto">
-      <div class="text-center mb-16">
-        <h2 class="text-4xl md:text-5xl font-bold mb-4">
-          Featured <span class="text-gradient">Work</span>
-        </h2>
-        <div class="w-20 h-1 bg-gradient-to-r from-purple-500 to-blue-500 mx-auto"></div>
-      </div>
-      
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <a href="https://github.com/shravanmadhu/personal-website" target="_blank" class="glass-effect rounded-xl p-6 card-3d group hover:scale-105 transition-all duration-300 block">
-          <div class="text-4xl mb-4 group-hover:scale-110 transition-transform">🌐</div>
-          <h3 class="text-xl font-bold mb-3 group-hover:text-blue-400 transition-colors">Personal Website</h3>
-          <p class="text-gray-400 mb-4 text-sm">
-            A responsive portfolio website built with HTML, Tailwind CSS, and JavaScript. Features dark mode, smooth scrolling, and modern design principles.
-          </p>
-          <div class="flex flex-wrap gap-2 mb-4">
-            <span class="px-2 py-1 bg-blue-500/20 text-blue-300 rounded text-xs">HTML</span>
-            <span class="px-2 py-1 bg-green-500/20 text-green-300 rounded text-xs">Tailwind</span>
-            <span class="px-2 py-1 bg-yellow-500/20 text-yellow-300 rounded text-xs">JavaScript</span>
-          </div>
-          <div class="flex items-center text-blue-400 text-sm">
-            <span>View Project</span>
-            <i data-lucide="external-link" class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"></i>
-          </div>
-        </a>
-        
-        <a href="https://github.com/shravanmadhu/wiki-chatbot" target="_blank" class="glass-effect rounded-xl p-6 card-3d group hover:scale-105 transition-all duration-300 block">
-          <div class="text-4xl mb-4 group-hover:scale-110 transition-transform">🤖</div>
-          <h3 class="text-xl font-bold mb-3 group-hover:text-blue-400 transition-colors">AI Chatbot</h3>
-          <p class="text-gray-400 mb-4 text-sm">
-            An intelligent Q&A chatbot that leverages Wikipedia data with contextual memory using LangChain and ChromaDB for semantic search and conversation flow.
-          </p>
-          <div class="flex flex-wrap gap-2 mb-4">
-            <span class="px-2 py-1 bg-green-500/20 text-green-300 rounded text-xs">Python</span>
-            <span class="px-2 py-1 bg-purple-500/20 text-purple-300 rounded text-xs">LangChain</span>
-            <span class="px-2 py-1 bg-indigo-500/20 text-indigo-300 rounded text-xs">ChromaDB</span>
-          </div>
-          <div class="flex items-center text-blue-400 text-sm">
-            <span>View Project</span>
-            <i data-lucide="external-link" class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"></i>
-          </div>
-        </a>
-        
-        <a href="https://github.com/shravanmadhu/esp32-rover" target="_blank" class="glass-effect rounded-xl p-6 card-3d group hover:scale-105 transition-all duration-300 block">
-          <div class="text-4xl mb-4 group-hover:scale-110 transition-transform">🚗</div>
-          <h3 class="text-xl font-bold mb-3 group-hover:text-blue-400 transition-colors">ESP32 Rover App</h3>
-          <p class="text-gray-400 mb-4 text-sm">
-            A React Native mobile application for controlling an ESP32-powered rover with real-time Bluetooth communication and voice command integration.
-          </p>
-          <div class="flex flex-wrap gap-2 mb-4">
-            <span class="px-2 py-1 bg-cyan-500/20 text-cyan-300 rounded text-xs">React Native</span>
-            <span class="px-2 py-1 bg-red-500/20 text-red-300 rounded text-xs">ESP32</span>
-            <span class="px-2 py-1 bg-blue-500/20 text-blue-300 rounded text-xs">Bluetooth</span>
-          </div>
-          <div class="flex items-center text-blue-400 text-sm">
-            <span>View Project</span>
-            <i data-lucide="external-link" class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"></i>
-          </div>
-        </a>
-      </div>
-      
-      <div class="text-center mt-12">
-        <a href="https://github.com/shravanmadhu" target="_blank" class="px-8 py-3 border border-white/30 rounded-full hover:bg-white/10 transition-all inline-flex items-center">
-          <i data-lucide="github" class="w-5 h-5 mr-2"></i>
-          View All Projects on GitHub
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Contact Section -->
-  <section id="contact" class="py-20 px-4">
-    <div class="max-w-4xl mx-auto text-center">
-      <div class="mb-16">
-        <h2 class="text-4xl md:text-5xl font-bold mb-4">
-          Let's <span class="text-gradient">Connect</span>
-        </h2>
-        <div class="w-20 h-1 bg-gradient-to-r from-purple-500 to-blue-500 mx-auto mb-6"></div>
-        <p class="text-xl text-gray-300">
-          Ready to turn your ideas into reality? Let's create something amazing together.
-        </p>
-      </div>
-      
-      <div class="grid md:grid-cols-3 gap-6 mb-12">
-        <a href="mailto:shravan@example.com" class="glass-effect p-6 rounded-xl card-3d hover:scale-105 transition-all">
-          <i data-lucide="mail" class="w-8 h-8 mx-auto mb-4 text-blue-400"></i>
-          <h3 class="font-semibold mb-2">Email</h3>
-          <p class="text-gray-400 text-sm">shravan@example.com</p>
-        </a>
-        
-        <a href="https://github.com/shravanmadhu" target="_blank" class="glass-effect p-6 rounded-xl card-3d hover:scale-105 transition-all">
-          <i data-lucide="github" class="w-8 h-8 mx-auto mb-4 text-green-400"></i>
-          <h3 class="font-semibold mb-2">GitHub</h3>
-          <p class="text-gray-400 text-sm">@shravanmadhu</p>
-        </a>
-        
-        <a href="https://linkedin.com/in/shravanmadhu" target="_blank" class="glass-effect p-6 rounded-xl card-3d hover:scale-105 transition-all">
-          <i data-lucide="linkedin" class="w-8 h-8 mx-auto mb-4 text-purple-400"></i>
-          <h3 class="font-semibold mb-2">LinkedIn</h3>
-          <p class="text-gray-400 text-sm">@shravanmadhu</p>
-        </a>
-      </div>
-      
-      <div class="flex justify-center space-x-6">
-        <a href="https://github.com/shravanmadhu" target="_blank" class="p-3 glass-effect rounded-full hover:scale-110 transition-all">
-          <i data-lucide="github" class="w-6 h-6"></i>
-        </a>
-        <a href="https://linkedin.com/in/shravanmadhu" target="_blank" class="p-3 glass-effect rounded-full hover:scale-110 transition-all">
-          <i data-lucide="linkedin" class="w-6 h-6"></i>
-        </a>
-        <a href="mailto:shravan@example.com" class="p-3 glass-effect rounded-full hover:scale-110 transition-all">
-          <i data-lucide="mail" class="w-6 h-6"></i>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="py-8 px-4 border-t border-white/10">
-    <div class="max-w-6xl mx-auto text-center">
-      <p class="text-gray-400">
-        © 2024 Shravan Madhu. Built with ❤️ using HTML, Tailwind CSS, and JavaScript.
-      </p>
-    </div>
-  </footer>
-
   <script>
-    // Theme Toggle
     function toggleTheme() {
       const html = document.documentElement;
       const themeIcon = document.getElementById('themeIcon');
-      
-      html.classList.toggle('dark');
       const isDark = html.classList.contains('dark');
-      
-      // Update icon based on theme
-      themeIcon.setAttribute('data-lucide', isDark ? 'moon' : 'sun');
+      html.classList.toggle('dark');
+      document.body.classList.toggle('light-mode', !isDark);
+      themeIcon.setAttribute('data-lucide', isDark ? 'sun' : 'moon');
       lucide.createIcons();
     }
 
-    // Mobile Menu Toggle
-    function toggleMobile() {
-      const mobileNav = document.getElementById('mobileNav');
-      mobileNav.classList.toggle('hidden');
-    }
-
-    // Smooth scrolling for navigation links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-          target.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-          });
-          
-          // Close mobile menu if open
-          const mobileNav = document.getElementById('mobileNav');
-          if (!mobileNav.classList.contains('hidden')) {
-            mobileNav.classList.add('hidden');
-          }
-        }
-      });
+    window.addEventListener('DOMContentLoaded', () => {
+      const html = document.documentElement;
+      const isDark = html.classList.contains('dark');
+      if (!isDark) document.body.classList.add('light-mode');
+      document.getElementById('themeIcon').setAttribute('data-lucide', isDark ? 'moon' : 'sun');
+      lucide.createIcons();
     });
-
-    // Initialize icons
-    lucide.createIcons();
-
-    // Set initial theme based on system preference
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-      document.documentElement.classList.remove('dark');
-      document.getElementById('themeIcon').setAttribute('data-lucide', 'sun');
-    } else {
-      document.documentElement.classList.add('dark');
-      document.getElementById('themeIcon').setAttribute('data-lucide', 'moon');
-    }
-    lucide.createIcons();
   </script>
 </body>
 </html>
